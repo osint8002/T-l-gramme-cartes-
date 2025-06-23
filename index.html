@@ -1,1029 +1,901 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kao'sint - Générateur de Documents Professionnels</title>
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#2c3e50">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Kao'sint">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- PWA Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%232c3e50'/><text x='90' y='110' font-family='Arial' font-size='60' font-weight='bold' text-anchor='middle' fill='white'>K</text></svg>">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232c3e50'/><text x='16' y='22' font-family='Arial' font-size='16' font-weight='bold' text-anchor='middle' fill='white'>K</text></svg>">
-    
-    <!-- Manifest -->
-    <link rel="manifest" href="data:application/json,{
-        'name': 'Kao\\'sint',
-        'short_name': 'Kao\\'sint',
-        'description': 'Service professionnel de création de documents',
-        'start_url': '/',
-        'display': 'standalone',
-        'background_color': '%23ecf0f1',
-        'theme_color': '%232c3e50',
-        'orientation': 'portrait',
-        'icons': [
-            {
-                'src': 'data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 192 192\\'><rect width=\\'192\\' height=\\'192\\' fill=\\'%232c3e50\\'/><text x=\\'96\\' y=\\'120\\' font-family=\\'Arial\\' font-size=\\'80\\' font-weight=\\'bold\\' text-anchor=\\'middle\\' fill=\\'white\\'>K</text></svg>',
-                'sizes': '192x192',
-                'type': 'image/svg+xml'
-            },
-            {
-                'src': 'data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 512 512\\'><rect width=\\'512\\' height=\\'512\\' fill=\\'%232c3e50\\'/><text x=\\'256\\' y=\\'320\\' font-family=\\'Arial\\' font-size=\\'200\\' font-weight=\\'bold\\' text-anchor=\\'middle\\' fill=\\'white\\'>K</text></svg>',
-                'sizes': '512x512',
-                'type': 'image/svg+xml'
-            }
-        ]
-    }">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --text-color: #2c3e50;
-            --light-bg: #ecf0f1;
-            --white: #ffffff;
-            --shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-bg);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
-            padding: 1rem 0;
-            box-shadow: var(--shadow);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--white);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--white);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--warning-color);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Main Content */
-        main {
-            margin-top: 80px;
-            min-height: calc(100vh - 80px);
-        }
-
-        .section {
-            padding: 4rem 0;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
-            text-align: center;
-            padding: 6rem 0;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: var(--accent-color);
-            color: var(--white);
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: all 0.3s;
-            animation: fadeInUp 1s ease-out 0.4s both;
-            border: none;
-            cursor: pointer;
-        }
-
-        .cta-button:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-        }
-
-        .anonymity-notice {
-            background: var(--warning-color);
-            color: var(--white);
-            padding: 1rem;
-            margin: 2rem 0;
-            border-radius: 8px;
-            text-align: center;
-            animation: pulse 2s infinite;
-        }
-
-        .anonymity-notice h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Document Selection */
-        .document-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .document-category {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .document-category:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .document-category h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-        }
-
-        .document-list {
-            list-style: none;
-        }
-
-        .document-item {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .document-item:hover {
-            color: var(--secondary-color);
-        }
-
-        .document-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Order Form */
-        .order-form {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            margin: 2rem 0;
-            display: none;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-        }
-
-        /* Info Sections */
-        .info-section {
-            background: var(--white);
-            padding: 3rem 0;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .info-card {
-            text-align: center;
-            padding: 2rem;
-            border-radius: 12px;
-            background: var(--light-bg);
-        }
-
-        .info-card i {
-            font-size: 3rem;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-
-        .info-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        /* FAQ */
-        .faq-item {
-            background: var(--white);
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .faq-question {
-            padding: 1.5rem;
-            background: var(--primary-color);
-            color: var(--white);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .faq-question::after {
-            content: '+';
-            position: absolute;
-            right: 1.5rem;
-            font-size: 1.5rem;
-            transition: transform 0.3s;
-        }
-
-        .faq-question.active::after {
-            transform: rotate(45deg);
-        }
-
-        .faq-answer {
-            padding: 0 1.5rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s, padding 0.3s;
-        }
-
-        .faq-answer.active {
-            padding: 1.5rem;
-            max-height: 500px;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary-color);
-            color: var(--white);
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        .social-links {
-            margin: 1rem 0;
-        }
-
-        .social-links a {
-            color: var(--white);
-            font-size: 1.5rem;
-            margin: 0 1rem;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--warning-color);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.02);
-            }
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: var(--white);
-            margin: 15% auto;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-        }
-
-        .close:hover {
-            color: var(--accent-color);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--primary-color);
-                flex-direction: column;
-                padding: 1rem;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .document-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .telegram-redirect {
-            background: var(--success-color);
-            color: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        .telegram-redirect h3 {
-            margin-bottom: 1rem;
-        }
-
-        .telegram-link {
-            display: inline-block;
-            background: var(--white);
-            color: var(--success-color);
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .telegram-link:hover {
-            background: var(--light-bg);
-            transform: translateY(-2px);
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kao'sint - Générateur de Documents Professionnels</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --text-color: #2c3e50;
+            --light-bg: #ecf0f1;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--warning-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            text-align: center;
+            padding: 6rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 0.4s both;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .anonymity-notice {
+            background: var(--warning-color);
+            color: var(--white);
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        .anonymity-notice h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Document Selection */
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .document-category {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .document-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .document-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .document-list {
+            list-style: none;
+        }
+
+        .document-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .document-item:hover {
+            color: var(--secondary-color);
+        }
+
+        .document-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Order Form */
+        .order-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        /* Info Sections */
+        .info-section {
+            background: var(--white);
+            padding: 3rem 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+            background: var(--light-bg);
+        }
+
+        .info-card i {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .info-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: var(--white);
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--primary-color);
+            color: var(--white);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+
+        .faq-answer.active {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .social-links {
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--warning-color);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .close:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .document-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .telegram-redirect {
+            background: var(--success-color);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .telegram-redirect h3 {
+            margin-bottom: 1rem;
+        }
+
+        .telegram-link {
+            display: inline-block;
+            background: var(--white);
+            color: var(--success-color);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .telegram-link:hover {
+            background: var(--light-bg);
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <a href="#" class="logo">Kao'sint</a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Accueil</a></li>
-                <li><a href="#documents">Documents</a></li>
-                <li><a href="#about">À propos</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-        </nav>
-    </header>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">Kao'sint</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Accueil</a></li>
+                <li><a href="#documents">Documents</a></li>
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </nav>
+    </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="container">
-                <h1>Kao'sint</h1>
-                <p>Service professionnel de création de documents de haute qualité</p>
-                <button class="cta-button" onclick="showDocuments()">Commander maintenant</button>
-                
-                <div class="anonymity-notice">
-                    <h3>🔒 Anonymat Garanti</h3>
-                    <p>Votre confidentialité est notre priorité. Aucune inscription requise, aucune donnée personnelle stockée. Service discret et sécurisé.</p>
-                </div>
-            </div>
-        </section>
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>Kao'sint</h1>
+                <p>Service professionnel de création de documents de haute qualité</p>
+                <button class="cta-button" onclick="showDocuments()">Commander maintenant</button>
+                
+                <div class="anonymity-notice">
+                    <h3>🔒 Anonymat Garanti</h3>
+                    <p>Votre confidentialité est notre priorité. Aucune inscription requise, aucune donnée personnelle stockée. Service discret et sécurisé.</p>
+                </div>
+            </div>
+        </section>
 
-        <!-- Document Selection -->
-        <section id="documents" class="section">
-            <div class="container">
-                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">Sélectionnez votre document</h2>
-                
-                <div class="document-grid">
-                    <div class="document-category">
-                        <h3>🇺🇸 États-Unis</h3>
-                        <ul class="document-list">
-                            <li class="document-item" onclick="selectDocument('Permis de conduire - Californie')">Permis de conduire - Californie</li>
-                            <li class="document-item" onclick="selectDocument('Permis de conduire - Texas')">Permis de conduire - Texas</li>
-                            <li class="document-item" onclick="selectDocument('Permis de conduire - New York')">Permis de conduire - New York</li>
-                            <li class="document-item" onclick="selectDocument('Passeport américain')">Passeport américain</li>
-                            <li class="document-item" onclick="selectDocument('Carte verte')">Carte verte</li>
-                            <li class="document-item" onclick="selectDocument('Numéro de sécurité sociale (SSN)')">Numéro de sécurité sociale (SSN)</li>
-                        </ul>
-                    </div>
+        <!-- Document Selection -->
+        <section id="documents" class="section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">Sélectionnez votre document</h2>
+                
+                <div class="document-grid">
+                    <div class="document-category">
+                        <h3>🇺🇸 États-Unis</h3>
+                        <ul class="document-list">
+                            <li class="document-item" onclick="selectDocument('Permis de conduire - Californie')">Permis de conduire - Californie</li>
+                            <li class="document-item" onclick="selectDocument('Permis de conduire - Texas')">Permis de conduire - Texas</li>
+                            <li class="document-item" onclick="selectDocument('Permis de conduire - New York')">Permis de conduire - New York</li>
+                            <li class="document-item" onclick="selectDocument('Passeport américain')">Passeport américain</li>
+                            <li class="document-item" onclick="selectDocument('Carte verte')">Carte verte</li>
+                            <li class="document-item" onclick="selectDocument('Numéro de sécurité sociale (SSN)')">Numéro de sécurité sociale (SSN)</li>
+                        </ul>
+                    </div>
 
-                    <div class="document-category">
-                        <h3>🇫🇷 France</h3>
-                        <ul class="document-list">
-                            <li class="document-item" onclick="selectDocument('Carte d\'identité française')">Carte d'identité française</li>
-                            <li class="document-item" onclick="selectDocument('Permis de conduire français')">Permis de conduire français</li>
-                            <li class="document-item" onclick="selectDocument('Passeport français')">Passeport français</li>
-                            <li class="document-item" onclick="selectDocument('Carte de séjour')">Carte de séjour</li>
-                        </ul>
-                    </div>
+                    <div class="document-category">
+                        <h3>🇫🇷 France</h3>
+                        <ul class="document-list">
+                            <li class="document-item" onclick="selectDocument('Carte d\'identité française')">Carte d'identité française</li>
+                            <li class="document-item" onclick="selectDocument('Permis de conduire français')">Permis de conduire français</li>
+                            <li class="document-item" onclick="selectDocument('Passeport français')">Passeport français</li>
+                            <li class="document-item" onclick="selectDocument('Carte de séjour')">Carte de séjour</li>
+                        </ul>
+                    </div>
 
-                    <div class="document-category">
-                        <h3>🇬🇧 Royaume-Uni</h3>
-                        <ul class="document-list">
-                            <li class="document-item" onclick="selectDocument('Permis de conduire britannique')">Permis de conduire britannique</li>
-                            <li class="document-item" onclick="selectDocument('Passeport britannique')">Passeport britannique</li>
-                            <li class="document-item" onclick="selectDocument('Carte de séjour britannique')">Carte de séjour britannique</li>
-                        </ul>
-                    </div>
+                    <div class="document-category">
+                        <h3>🇬🇧 Royaume-Uni</h3>
+                        <ul class="document-list">
+                            <li class="document-item" onclick="selectDocument('Permis de conduire britannique')">Permis de conduire britannique</li>
+                            <li class="document-item" onclick="selectDocument('Passeport britannique')">Passeport britannique</li>
+                            <li class="document-item" onclick="selectDocument('Carte de séjour britannique')">Carte de séjour britannique</li>
+                        </ul>
+                    </div>
 
-                    <div class="document-category">
-                        <h3>🇩🇪 Allemagne</h3>
-                        <ul class="document-list">
-                            <li class="document-item" onclick="selectDocument('Carte d\'identité allemande')">Carte d'identité allemande</li>
-                            <li class="document-item" onclick="selectDocument('Permis de conduire allemand')">Permis de conduire allemand</li>
-                            <li class="document-item" onclick="selectDocument('Passeport allemand')">Passeport allemand</li>
-                            <li class="document-item" onclick="selectDocument('Permis de séjour allemand')">Permis de séjour allemand</li>
-                        </ul>
-                    </div>
+                    <div class="document-category">
+                        <h3>🇩🇪 Allemagne</h3>
+                        <ul class="document-list">
+                            <li class="document-item" onclick="selectDocument('Carte d\'identité allemande')">Carte d'identité allemande</li>
+                            <li class="document-item" onclick="selectDocument('Permis de conduire allemand')">Permis de conduire allemand</li>
+                            <li class="document-item" onclick="selectDocument('Passeport allemand')">Passeport allemand</li>
+                            <li class="document-item" onclick="selectDocument('Permis de séjour allemand')">Permis de séjour allemand</li>
+                        </ul>
+                    </div>
 
-                    <div class="document-category">
-                        <h3>🇨🇦 Canada</h3>
-                        <ul class="document-list">
-                            <li class="document-item" onclick="selectDocument('Permis de conduire - Ontario')">Permis de conduire - Ontario</li>
-                            <li class="document-item" onclick="selectDocument('Permis de conduire - Québec')">Permis de conduire - Québec</li>
-                            <li class="document-item" onclick="selectDocument('Passeport canadien')">Passeport canadien</li>
-                            <li class="document-item" onclick="selectDocument('Carte de résidence')">Carte de résidence</li>
-                        </ul>
-                    </div>
+                    <div class="document-category">
+                        <h3>🇨🇦 Canada</h3>
+                        <ul class="document-list">
+                            <li class="document-item" onclick="selectDocument('Permis de conduire - Ontario')">Permis de conduire - Ontario</li>
+                            <li class="document-item" onclick="selectDocument('Permis de conduire - Québec')">Permis de conduire - Québec</li>
+                            <li class="document-item" onclick="selectDocument('Passeport canadien')">Passeport canadien</li>
+                            <li class="document-item" onclick="selectDocument('Carte de résidence')">Carte de résidence</li>
+                        </ul>
+                    </div>
 
-                    <div class="document-category">
-                        <h3>📄 Documents bancaires</h3>
-                        <ul class="document-list">
-                            <li class="document-item" onclick="selectDocument('Relevé bancaire - Bank of America')">Relevé bancaire - Bank of America</li>
-                            <li class="document-item" onclick="selectDocument('Relevé bancaire - Chase')">Relevé bancaire - Chase</li>
-                            <li class="document-item" onclick="selectDocument('Relevé bancaire - Wells Fargo')">Relevé bancaire - Wells Fargo</li>
-                            <li class="document-item" onclick="selectDocument('Chèque bancaire')">Chèque bancaire</li>
-                        </ul>
-                    </div>
-                </div>
+                    <div class="document-category">
+                        <h3>📄 Documents bancaires</h3>
+                        <ul class="document-list">
+                            <li class="document-item" onclick="selectDocument('Relevé bancaire - Bank of America')">Relevé bancaire - Bank of America</li>
+                            <li class="document-item" onclick="selectDocument('Relevé bancaire - Chase')">Relevé bancaire - Chase</li>
+                            <li class="document-item" onclick="selectDocument('Relevé bancaire - Wells Fargo')">Relevé bancaire - Wells Fargo</li>
+                            <li class="document-item" onclick="selectDocument('Chèque bancaire')">Chèque bancaire</li>
+                        </ul>
+                    </div>
+                </div>
 
-                <!-- Order Form -->
-                <div id="orderForm" class="order-form">
-                    <h3>Commande de document</h3>
-                    <form id="documentOrder">
-                        <div class="form-group">
-                            <label for="selectedDoc">Document sélectionné :</label>
-                            <input type="text" id="selectedDoc" readonly>
-                        </div>
+                <!-- Order Form -->
+                <div id="orderForm" class="order-form">
+                    <h3>Commande de document</h3>
+                    <form id="documentOrder">
+                        <div class="form-group">
+                            <label for="selectedDoc">Document sélectionné :</label>
+                            <input type="text" id="selectedDoc" readonly>
+                        </div>
 
-                        <div class="form-group">
-                            <label for="customerName">Nom (optionnel) :</label>
-                            <input type="text" id="customerName" placeholder="Laissez vide pour rester anonyme">
-                        </div>
+                        <div class="form-group">
+                            <label for="customerName">Nom (optionnel) :</label>
+                            <input type="text" id="customerName" placeholder="Laissez vide pour rester anonyme">
+                        </div>
 
-                        <div class="form-group">
-                            <label for="specifications">Spécifications particulières :</label>
-                            <textarea id="specifications" rows="4" placeholder="Décrivez vos besoins spécifiques (nom sur le document, date, etc.)"></textarea>
-                        </div>
+                        <div class="form-group">
+                            <label for="specifications">Spécifications particulières :</label>
+                            <textarea id="specifications" rows="4" placeholder="Décrivez vos besoins spécifiques (nom sur le document, date, etc.)"></textarea>
+                        </div>
 
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" required> 
-                                J'accepte que ce service soit utilisé de manière responsable
-                            </label>
-                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" required> 
+                                J'accepte que ce service soit utilisé de manière responsable
+                            </label>
+                        </div>
 
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" required> 
-                                Je comprends qu'une version de démonstration sera fournie avant tout paiement
-                            </label>
-                        </div>
-                        <section>
-                            <form action = "https://t.me/PeterBTC2" method = "POST">
-                                <button type="submit" class="cta-button" style="width: 100%;">Envoyer la commande</button>                          
-                            </form>
-                            
-                            
-                        </section>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" required> 
+                                Je comprends qu'une version de démonstration sera fournie avant tout paiement
+                            </label>
+                        </div>
 
-                        <button type="submit" class="cta-button" style="width: 100%;">Envoyer la commande</button>
-                    
-                    </form>
-                </div>
-            </div>
-        </section>
+                        <button type="submit" class="cta-button" style="width: 100%;">Envoyer la commande</button>
+                    </form>
+                </div>
+            </div>
+        </section>
 
-        <!-- About Section -->
-        <section id="about" class="info-section">
-            <div class="container">
-                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">À propos de Kao'sint</h2>
-                
-                <div class="info-grid">
-                    <div class="info-card">
-                        <i>🛡️</i>
-                        <h3>Sécurité et Anonymat</h3>
-                        <p>Service entièrement anonyme, aucune donnée personnelle stockée. Votre confidentialité est garantie.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i>⚡</i>
-                        <h3>Livraison Rapide</h3>
-                        <p>Documents de haute qualité livrés rapidement via notre système sécurisé Telegram.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i>🎯</i>
-                        <h3>Qualité Professionnelle</h3>
-                        <p>Reproduction fidèle avec attention aux détails, utilisation de technologies avancées.</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i>💬</i>
-                        <h3>Support 24/7</h3>
-                        <p>Assistance disponible via notre assistant Telegram pour tous vos besoins.</p>
-                    </div>
-                </div>
+        <!-- About Section -->
+        <section id="about" class="info-section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">À propos de Kao'sint</h2>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <i>🛡️</i>
+                        <h3>Sécurité et Anonymat</h3>
+                        <p>Service entièrement anonyme, aucune donnée personnelle stockée. Votre confidentialité est garantie.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i>⚡</i>
+                        <h3>Livraison Rapide</h3>
+                        <p>Documents de haute qualité livrés rapidement via notre système sécurisé Telegram.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i>🎯</i>
+                        <h3>Qualité Professionnelle</h3>
+                        <p>Reproduction fidèle avec attention aux détails, utilisation de technologies avancées.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <i>💬</i>
+                        <h3>Support 24/7</h3>
+                        <p>Assistance disponible via notre assistant Telegram pour tous vos besoins.</p>
+                    </div>
+                </div>
 
-                <div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-top: 2rem;">
-                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Notre Histoire</h3>
-                    <p>Kao'sint est un service professionnel spécialisé dans la création de documents de haute qualité. Nous utilisons des technologies avancées pour fournir des reproductions fidèles de divers documents officiels. Notre mission est de fournir un service discret, rapide et professionnel à nos clients du monde entier.</p>
-                    
-                    <p style="margin-top: 1rem;">Fondé par des experts en technologie documentaire, Kao'sint s'engage à maintenir les plus hauts standards de qualité tout en garantissant l'anonymat complet de nos clients. Nous comprenons l'importance de la discrétion dans ce domaine spécialisé.</p>
-                    
-                    <div style="background: var(--warning-color); color: var(--white); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                        <strong>Note importante :</strong> Les pays et types de documents mentionnés sur notre site représentent nos offres les plus courantes. Si le document que vous recherchez ou votre pays ne figure pas dans la liste, ne vous inquiétez pas ! Notre équipe peut très probablement vous aider.
+                <div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-top: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Notre Histoire</h3>
+                    <p>Kao'sint est un service professionnel spécialisé dans la création de documents de haute qualité. Nous utilisons des technologies avancées pour fournir des reproductions fidèles de divers documents officiels. Notre mission est de fournir un service discret, rapide et professionnel à nos clients du monde entier.</p>
+                    
+                    <p style="margin-top: 1rem;">Fondé par des experts en technologie documentaire, Kao'sint s'engage à maintenir les plus hauts standards de qualité tout en garantissant l'anonymat complet de nos clients. Nous comprenons l'importance de la discrétion dans ce domaine spécialisé.</p>
+                    
+                    <div style="background: var(--warning-color); color: var(--white); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <strong>Note importante :</strong> Les documents et pays mentionnés sur ce site sont les plus fréquemment demandés. Si vous avez besoin d'un autre type de document ou si votre pays ne figure pas dans la liste, veuillez contacter notre assistant sur Telegram pour passer votre commande : https://t.me/PeterBTC2
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">Questions Fréquentes</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Comment créer une commande sur Kao'sint ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sélectionnez le document souhaité dans notre catalogue, remplissez vos spécifications et envoyez votre commande. Vous serez automatiquement redirigé vers notre assistant Telegram pour finaliser les détails et le paiement.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Comment recharger le solde sur Kao'sint ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Le paiement se fait directement via Telegram avec notre assistant @PeterBTC2. Nous acceptons plusieurs méthodes de paiement sécurisées pour votre convenance.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Proposez-vous une version de démonstration ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, une version de démonstration est toujours fournie avant tout paiement pour que vous puissiez vérifier la qualité de notre travail.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Comment garantissez-vous l'anonymat ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Aucune inscription n'est requise sur notre site. Toutes les communications se font via Telegram, et nous ne conservons aucune donnée personnelle. Votre anonymat est notre priorité absolue.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Quels sont les délais de livraison ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Les délais varient selon le type de document, mais nous nous efforçons de livrer dans les meilleurs délais. Les détails précis seront discutés avec notre assistant Telegram.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Comment puis-je vous contacter ?
+                    </div>
+                    <div class="faq-answer">
+                        <p>Le moyen le plus rapide est de contacter notre assistant Telegram @PeterBTC2. Vous pouvez également rejoindre notre canal Telegram pour les dernières nouvelles et informations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="info-section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">Nous Contacter</h2>
+                
+                <div style="text-align: center;">
+                    <div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); display: inline-block;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Assistant Telegram</h3>
+                        <p>Pour toute question ou commande :</p>
+                        <a href="https://t.me/PeterBTC2" class="telegram-link" target="_blank">@PeterBTC2</a>
+                        
+                        <h3 style="color: var(--primary-color); margin: 2rem 0 1rem 0;">Canal d'Information</h3>
+                        <p>Suivez nos actualités :</p>
+                        <div class="social-links">
+                            <a href="#" target="_blank">📺 YouTube</a>
+                            <a href="#" target="_blank">🎵 TikTok</a>
+                            <a href="#" target="_blank">📘 Facebook</a>
+                            <a href="#" target="_blank">💬 Canal Telegram</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--accent-color); color: var(--white); padding: 2rem; border-radius: 12px; margin-top: 2rem; text-align: center;">
+                    <h3>⚠️ Avis Important</h3>
+                    <p>Les pays et types de documents mentionnés sur notre site représentent nos offres les plus courantes. Si le document que vous recherchez ou votre pays ne figure pas dans la liste, ne vous inquiétez pas ! Notre équipe peut très probablement vous aider.
 Pour toute demande spécifique ou pour un pays non mentionné, veuillez contacter directement notre assistant sur Telegram pour passer votre commande :
-<a>https://t.me/PeterBTC2</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+https://t.me/PeterBTC2</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        <!-- FAQ Section -->
-        <section id="faq" class="section">
-            <div class="container">
-                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">Questions Fréquentes</h2>
-                
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Comment créer une commande sur Kao'sint ?
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sélectionnez le document souhaité dans notre catalogue, remplissez vos spécifications et envoyez votre commande. Vous serez automatiquement redirigé vers notre assistant Telegram pour finaliser les détails et le paiement.</p>
-                    </div>
-                </div>
+    <!-- Modal for Telegram Redirect -->
+    <div id="telegramModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="telegram-redirect">
+                <h3>🚀 Commande envoyée !</h3>
+                <p>Votre commande a été préparée. Cliquez sur le bouton ci-dessous pour contacter notre assistant Telegram et finaliser votre commande.</p>
+                <p><strong>Une version de démonstration sera fournie avant tout paiement.</strong></p>
+                <a href="https://t.me/PeterBTC2" id="telegramLinkBtn" class="telegram-link" target="_blank">Contacter @PeterBTC2</a>
+            </div>
+        </div>
+    </div>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Comment recharger le solde sur Kao'sint ?
-                    </div>
-                    <div class="faq-answer">
-                        <p>Le paiement se fait directement via Telegram avec notre assistant @PeterBTC2. Nous acceptons plusieurs méthodes de paiement sécurisées pour votre convenance.</p>
-                    </div>
-                </div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Kao'sint. Service professionnel et anonyme.</p>
+            <div class="social-links">
+                <a href="#" target="_blank">📺</a>
+                <a href="#" target="_blank">🎵</a>
+                <a href="#" target="_blank">📘</a>
+                <a href="https://t.me/PeterBTC2" target="_blank">💬</a>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                Service discret et sécurisé • Anonymat garanti • Support 24/7
+            </p>
+        </div>
+    </footer>
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Proposez-vous une version de démonstration ?
-                    </div>
-                    <div class="faq-answer">
-                        <p>Oui, une version de démonstration est toujours fournie avant tout paiement pour que vous puissiez vérifier la qualité de notre travail.</p>
-                    </div>
-                </div>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        });
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Comment garantissez-vous l'anonymat ?
-                    </div>
-                    <div class="faq-answer">
-                        <p>Aucune inscription n'est requise sur notre site. Toutes les communications se font via Telegram, et nous ne conservons aucune donnée personnelle. Votre anonymat est notre priorité absolue.</p>
-                    </div>
-                </div>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Quels sont les délais de livraison ?
-                    </div>
-                    <div class="faq-answer">
-                        <p>Les délais varient selon le type de document, mais nous nous efforçons de livrer dans les meilleurs délais. Les détails précis seront discutés avec notre assistant Telegram.</p>
-                    </div>
-                </div>
+        // Show documents section
+        function showDocuments() {
+            document.getElementById('documents').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
 
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">
-                        Comment puis-je vous contacter ?
-                    </div>
-                    <div class="faq-answer">
-                        <p>Le moyen le plus rapide est de contacter notre assistant Telegram @PeterBTC2. Vous pouvez également rejoindre notre canal Telegram pour les dernières nouvelles et informations.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        // Document selection
+        function selectDocument(documentName) {
+            document.getElementById('selectedDoc').value = documentName;
+            document.getElementById('orderForm').style.display = 'block';
+            document.getElementById('orderForm').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
 
-        <!-- Contact Section -->
-        <section id="contact" class="info-section">
-            <div class="container">
-                <h2 style="text-align: center; margin-bottom: 3rem; color: var(--primary-color);">Nous Contacter</h2>
-                
-                <div style="text-align: center;">
-                    <div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); display: inline-block;">
-                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Assistant Telegram</h3>
-                        <p>Pour toute question ou commande :</p>
-                        <a href="https://t.me/PeterBTC2" class="telegram-link" target="_blank">@PeterBTC2</a>
-                        
-                        <h3 style="color: var(--primary-color); margin: 2rem 0 1rem 0;">Canal d'Information</h3>
-                        <p>Suivez nos actualités :</p>
-                        <div class="social-links">
-                            <a href="https://www.youtube.com/@Kaosintwill" target="_blank">📺 YouTube</a><br>
-                            <a href="https://www.youtube.com/@Kaosintwill" target="_blank">🎵 TikTok</a><br>
-                            <a href="https://www.facebook.com/profile.php?id=61561003237784" target="_blank">📘 Facebook</a><br>
-                            <a href="https://t.me/kaosint" target="_blank">💬 Canal Telegram</a>
-                        </div>
-                    </div>
-                </div>
+        // Order form submission
+        document.getElementById('documentOrder').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const selectedDoc = document.getElementById('selectedDoc').value;
+            const customerName = document.getElementById('customerName').value || 'Client anonyme';
+            const specifications = document.getElementById('specifications').value;
+            
+            // Prepare message for Telegram
+            const message = `🔥 NOUVELLE COMMANDE KAO'SINT 🔥\n\n` +
+                          `📄 Document: ${selectedDoc}\n` +
+                          `👤 Client: ${customerName}\n` +
+                          `📝 Spécifications: ${specifications || 'Aucune spécification particulière'}\n\n` +
+                          `⏰ Commande passée le: ${new Date().toLocaleString('fr-FR')}\n\n` +
+                          `✅ Version de démonstration demandée avant paiement`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Update telegram link with message
+            const telegramLink = document.getElementById('telegramLinkBtn');
+            telegramLink.href = `https://t.me/PeterBTC2?text=${encodedMessage}`;
+            
+            // Show modal
+            document.getElementById('telegramModal').style.display = 'block';
+        });
 
-                <div style="background: var(--accent-color); color: var(--white); padding: 2rem; border-radius: 12px; margin-top: 2rem; text-align: center;">
-                    <h3>⚠️ Avis Important</h3>
-                    <p>Les documents et pays mentionnés sur ce site sont les plus fréquemment demandés. Si vous avez besoin d'un autre type de document ou si votre pays ne figure pas dans la liste, veuillez contacter notre assistant sur Telegram pour passer votre commande : <a>https://t.me/PeterBTC2</a> . Kao'sint décline toute responsabilité en cas d'usage inapproprié.</p>
-                </div>
-            </div>
-        </section>
-    </main>
+        // Modal functionality
+        const modal = document.getElementById('telegramModal');
+        const closeBtn = document.querySelector('.close');
 
-    <!-- Modal for Telegram Redirect -->
-    <div id="telegramModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="telegram-redirect">
-                <h3>🚀 Commande envoyée !</h3>
-                <p>Votre commande a été préparée. Cliquez sur le bouton ci-dessous pour contacter notre assistant Telegram et finaliser votre commande.</p>
-                <p><strong>Une version de démonstration sera fournie avant tout paiement.</strong></p>
-                <a href="https://t.me/PeterBTC2" id="telegramLinkBtn" class="telegram-link" target="_blank">Contacter @PeterBTC2</a>
-            </div>
-        </div>
-    </div>
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Kao'sint. Service professionnel et anonyme.</p>
-            <div class="social-links">
-                <a href="#" target="_blank">📺</a>
-                <a href="#" target="_blank">🎵</a>
-                <a href="#" target="_blank">📘</a>
-                <a href="https://t.me/PeterBTC2" target="_blank">💬</a>
-            </div>
-            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
-                Service discret et sécurisé • Anonymat garanti • Support 24/7
-            </p>
-        </div>
-    </footer>
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
 
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
-        });
+        // FAQ toggle
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const isActive = element.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.classList.remove('active');
+                q.nextElementSibling.classList.remove('active');
+            });
+            
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                element.classList.add('active');
+                answer.classList.add('active');
+            }
+        }
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        // Dark mode detection (optional)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
 
-        // Show documents section
-        function showDocuments() {
-            document.getElementById('documents').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
 
-        // Document selection
-        function selectDocument(documentName) {
-            document.getElementById('selectedDoc').value = documentName;
-            document.getElementById('orderForm').style.display = 'block';
-            document.getElementById('orderForm').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
+        // Add some entrance animations
+        window.addEventListener('load', function() {
+            const elements = document.querySelectorAll('.document-category, .info-card, .faq-item');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.animation = `fadeInUp 0.6s ease-out forwards`;
+                }, index * 100);
+            });
+        });
 
-        // Order form submission
-        document.getElementById('documentOrder').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const selectedDoc = document.getElementById('selectedDoc').value;
-            const customerName = document.getElementById('customerName').value || 'Client anonyme';
-            const specifications = document.getElementById('specifications').value;
-            
-            // Prepare message for Telegram
-            const message = `🔥 NOUVELLE COMMANDE KAO'SINT 🔥\n\n` +
-                          `📄 Document: ${selectedDoc}\n` +
-                          `👤 Client: ${customerName}\n` +
-                          `📝 Spécifications: ${specifications || 'Aucune spécification particulière'}\n\n` +
-                          `⏰ Commande passée le: ${new Date().toLocaleString('fr-FR')}\n\n` +
-                          `✅ Version de démonstration demandée avant paiement`;
-            
-            // Encode message for URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Update telegram link with message
-            const telegramLink = document.getElementById('telegramLinkBtn');
-            telegramLink.href = `https://t.me/PeterBTC2?text=${encodedMessage}`;
-            
-            // Show modal
-            document.getElementById('telegramModal').style.display = 'block';
-        });
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-        // Modal functionality
-        const modal = document.getElementById('telegramModal');
-        const closeBtn = document.querySelector('.close');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
 
-        closeBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        window.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // FAQ toggle
-        function toggleFAQ(element) {
-            const answer = element.nextElementSibling;
-            const isActive = element.classList.contains('active');
-            
-            // Close all FAQ items
-            document.querySelectorAll('.faq-question').forEach(q => {
-                q.classList.remove('active');
-                q.nextElementSibling.classList.remove('active');
-            });
-            
-            // Open clicked item if it wasn't active
-            if (!isActive) {
-                element.classList.add('active');
-                answer.classList.add('active');
-            }
-        }
-
-        // Dark mode detection (optional)
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        });
-
-        // Add some entrance animations
-        window.addEventListener('load', function() {
-            const elements = document.querySelectorAll('.document-category, .info-card, .faq-item');
-            elements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.style.animation = `fadeInUp 0.6s ease-out forwards`;
-                }, index * 100);
-            });
-        });
-
-        // Add scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.document-category, .info-card').forEach(el => {
-            observer.observe(el);
-        });
-
-        // PWA Installation
-        let deferredPrompt;
-        const installButton = document.createElement('button');
-        installButton.textContent = 'Installer l\'App';
-        installButton.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 1000;
-            display: none;
-        `;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installButton.style.display = 'block';
-            document.body.appendChild(installButton);
-        });
-
-        installButton.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
-            
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-                installButton.style.display = 'none';
-            }
-            
-            deferredPrompt = null;
-        });
-
-        // Register Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swCode = `
-                    const CACHE_NAME = 'kaosint-v1';
-                    const urlsToCache = [
-                        '/',
-                        '/offline.html'
-                    ];
-
-                    self.addEventListener('install', event => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME)
-                                .then(cache => cache.addAll(urlsToCache))
-                        );
-                    });
-
-                    self.addEventListener('fetch', event => {
-                        event.respondWith(
-                            caches.match(event.request)
-                                .then(response => {
-                                    if (response) {
-                                        return response;
-                                    }
-                                    return fetch(event.request);
-                                })
-                        );
-                    });
-                `;
-                
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-                
-                navigator.serviceWorker.register(swUrl)
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
-    </script>
+        document.querySelectorAll('.document-category, .info-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
